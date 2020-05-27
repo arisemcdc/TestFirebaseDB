@@ -14,7 +14,8 @@ import java.time.LocalDate
             .set(user)
     }
 }*/
-class User(var id:Int, var name:String, var age: Int, var dateOfBirth:LocalDate)
+//class User(var id:Int, var name:String, var age: Int, var dateOfBirth:LocalDate)
+class User(var id:Int, var name:String, var age: Int)
 
 /*
 class User {

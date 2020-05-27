@@ -30,6 +30,6 @@ class UserHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
             itemView.userTextView.text = value?.name
             itemView.ageTextView.text = value?.age.toString()
             itemView.idTextView.text = value?.id.toString()
-            itemView.dateOfBirthTextView.setText(value?.dateOfBirth.toString())
+            //itemView.dateOfBirthTextView.setText(value?.dateOfBirth.toString())
         }
 }
