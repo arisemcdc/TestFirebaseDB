@@ -13,6 +13,7 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_main.*
 import java.time.LocalDate
 
+
 class MainActivity : AppCompatActivity() {
     lateinit var userListAdapter: UserListAdapter
     val db = Firebase.firestore
@@ -32,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         users.observe(this, Observer {
             userListAdapter = UserListAdapter(it)
             usersList.adapter = userListAdapter
-                //createUserDBListener()
+               // createUserDBListener()
         })
         /*users.observe(this, Observer {
             userListAdapter = UserListAdapter(it)
@@ -54,36 +55,50 @@ class MainActivity : AppCompatActivity() {
 
         }
         deleteButton.setOnClickListener {
-
-
-
-
+            val user = User(idEditText.text.toString().toInt(), nameeditText.text.toString(),
+                ageeditText.text.toString().toInt())
+            deleteUser(user)
         }
-        updateButton.setOnClickListener {
 
+        updateButton.setOnClickListener {
+            val user = User(idEditText.text.toString().toInt(), nameeditText.text.toString(),
+                ageeditText.text.toString().toInt())
+            insertUser(user)
         }
 
 
     }
+    fun deleteUser(user: User){
+        db.collection("Users").document(user.id.toString())
+        .delete()
+    }
 
     fun insertUser(user: User) {
+        val data = hashMapOf(
+            "name" to user.name,
+            "age" to user.age
+        )
         db.collection("Users").document(user.id.toString())
-            .set(user)
+            .set(data)
     }
     fun createUserDBListener() {
         db.collection("Users").addSnapshotListener{querySnapshot, firebaseFirestoreException ->
             if (querySnapshot !=null) {
+                val users = mutableListOf<User>()
                 for (item  in querySnapshot) {
                     val userName = item.getField<String>("name")
                     val userAge = item.getField<Int>("age")
-                    val userId = item.getField<Int>("id")
+                    val userId = item.id.toString().toInt()
+                    //val userDateOfBirth = item.getField<String>("dateOfBirth")
                     val user = User(userId!!, userName!!, userAge!!)
-                    val users = mutableListOf<User>()
+
                     users.add(user)
                     _users.value = users
 
                 }
-            }
+            } else
+                _users.value = emptyList()
+
         }
     }
 }
